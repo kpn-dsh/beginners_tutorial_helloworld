@@ -1,4 +1,4 @@
-FROM python:3.7.0-alpine
+FROM python:3.9.16-alpine
 
 # dependency for ssl http
 RUN apk update && apk add openssl 
