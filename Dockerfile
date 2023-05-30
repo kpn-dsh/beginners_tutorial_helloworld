@@ -1,7 +1,7 @@
 FROM python:3.7.0-alpine
 
 # dependency for ssl http
-RUN apk update && apk add openssl 
+RUN apk update && apk add openssl
 
 # dsh dependencies
 COPY dsh /home/dsh/dsh
@@ -17,9 +17,14 @@ RUN addgroup -g ${USERID} dsh && adduser -u ${USERID} -G dsh -D -h /home/dsh dsh
 # install
 RUN pip install googleapis-common-protos confluent-kafka==0.11.4 requests
 
-# install required packages
+# install sample application
 COPY src/ /home/dsh/app/
+
+# set permissions for scripts
 RUN chown -R $USERID.$USERID /home/dsh/
+
+# allow execution for entry point script
+RUN chmod +x /home/dsh/dsh/entrypoint.sh
 
 USER dsh
 WORKDIR /home/dsh/app
