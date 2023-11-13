@@ -60,7 +60,7 @@ As the focus of this tutorial is not writing code, this code is almost ready-for
     - Again, this can be any string. In this tutorial we will use `hello-world`.
  - `tenantuserid`: Your UserID on the tenant.
     - This can be found as follows:
-        1. Go to the [DSH Console](https://console.poc.kpn-dsh.com/)
+        1. Go to the [DSH Console]
         2. Login to the `training` tenant
         3. Click on `Resources >> Overview`
         4. At the bottom of this page you can see the UserID formatted as `<number>:<number>`. The left number is your UserID. 
@@ -70,7 +70,7 @@ As the focus of this tutorial is not writing code, this code is almost ready-for
 In this step a Docker image is build and subsequently pushed it to Harbor. From there it can be used on the DSH to deploy as a service.
 
 Having GNU Maker installed makes this step very simple, because all of the Docker commands are already specified in the `Makefile`. This means that the only actions required in this step are the following:
- 1. Login to [Harbor](https://registry.cp.kpn-dsh.com/)
+ 1. Login to [Harbor].
  2. On the top-right: Click on `<your_username> >> User Profile`
  3. Remember your `Username` and copy your `CLI secret`
  4. Make sure that Docker is running on your machine
@@ -90,7 +90,7 @@ Having GNU Maker installed makes this step very simple, because all of the Docke
 ### Optional: Checkout the Docker image on Harbor
 By running the `make all` command, the Docker image was pushed to the Harbor repository, where it is stored and ready to be deployed in a service on the DSH. 
 
-The `hello-world` image (along with the others) can be viewed on [Harbor](https://registry.cp.kpn-dsh.com/). After having logged in, the image can be found by clicking on `training >> training/hello-world`. 
+The `hello-world` image (along with the others) can be viewed on [Harbor]. After having logged in, the image can be found by clicking on `training >> training/hello-world`. 
 This page shows the different versions[^5] of the image that have been uploaded to Harbor. 
 As you can see, the image is also scanned for potential security vulnerabilities. This can be ignored for this tutorial.
 
@@ -99,7 +99,7 @@ As you can see, the image is also scanned for potential security vulnerabilities
 ## 4. Create the Kafka topic (on the DSH)
 Now that our application is available as an image on Harbor, it is finally time to start working on the DSH! 
 The first thing that needs to be done on the DSH is to create a Kafka topic to which the `Hello World!` service will send messages. For this, a so-called scratch-topic[^6] <!--- TODO: link to page on scratch-topics.--> will be used. A new Kafka topic is created as follows:
-1. Login to the [DSH Console](https://console.training.kpn-dsh.com/).
+1. Login to the [DSH Console].
 2. Go to `resources >> topics` and click on the <!---blue `+ Topic`--> <img src="https://user-images.githubusercontent.com/24662859/220603073-b49f875d-d3f4-4dde-b0e0-7388a575422c.png" height="30"/> button.
 3. Fill in the *Topic name* (`hello-world`) and the *# of partitions* (`1`). 
 4. Press the <!--`create topic`--> <img src="https://user-images.githubusercontent.com/24662859/220603333-84e993f9-018b-4017-9d5d-a074c2ef619a.png" height="30"/> button.
@@ -146,3 +146,6 @@ The way to stop a service is as follows:
  1. Go to `services >> overview` on the DSH console and click on the service that was created in step 5. 
  2. Click on the <!---blue `□`--> <img src="https://user-images.githubusercontent.com/24662859/220604297-23835a26-11a1-40f6-9969-63006495a034.png" height="30"/> button to stop the service.
  3. (Optional): If you are certain that you will not (want to) use this service again, you can also remove the service by clicking the <!---red trash-bin--> <img src="https://user-images.githubusercontent.com/24662859/220604313-2db36764-3435-403e-8627-79414326f935.png" height="30"/> button on the top right.
+
+[DSH Console]: https://console.poc.kpn-dsh.com/
+[Harbor]: https://registry.cp.kpn-dsh.com/
