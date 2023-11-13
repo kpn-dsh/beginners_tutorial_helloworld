@@ -6,6 +6,8 @@ tagname=hello-world
 tenantuserid=1054
 image=$(DOCKER_REPO_URL)/$(tagname):$(VERSION)
 
+PLATFORM_ARCH=linux/amd64
+
 help:
 	@echo "login   - login to the relevant repository"
 	@echo "fix     - run dos2unix on every file"
@@ -20,10 +22,10 @@ login:
 fix: 
 	find . -type f -print0 | xargs -0 dos2unix
 build:
-	docker build -t $(tagname) -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
+	docker build --platform $(PLATFORM_ARCH) -t $(tagname) -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
 	docker tag  $(tagname) $(image)
 rebuild:
-	docker build --no-cache -t $(tagname) -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
+	docker build --no-cache --platform $(PLATFORM_ARCH) -t $(tagname) -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
 	docker tag  $(tagname) $(image)
 all:
 	make login
