@@ -1,29 +1,35 @@
 FROM python:3.7.0-alpine
 
-# dependency for ssl http
-RUN apk update && apk add openssl 
-
-# dsh dependencies
-COPY dsh /home/dsh/dsh
+ARG UID
+ARG GID=${UID}
+ARG USER=dsh
+ARG GROUP=dsh
 
 # dependencies for librdkafka
-RUN apk add alpine-sdk librdkafka librdkafka-dev postgresql-dev
+RUN apk add --no-cache \
+      alpine-sdk \
+      librdkafka \
+      librdkafka-dev \
+      openssl \
+      postgresql-dev
 
 # create dsh group and user
-ARG tenantuserid
-ENV USERID $tenantuserid
-RUN addgroup -g ${USERID} dsh && adduser -u ${USERID} -G dsh -D -h /home/dsh dsh
+RUN addgroup -g ${GID} ${GROUP} \
+ && adduser -u ${UID} -G ${GROUP} -D -h /home/${USER} ${USER}
 
 # install
 RUN pip install googleapis-common-protos confluent-kafka==0.11.4 requests
 
+# dsh dependencies
+COPY --chown=${UID}:${GID} --chmod=550 dsh/entrypoint.sh /entrypoint.sh
+COPY --chown=${UID}:${GID} --chmod=550 dsh/setup_ssl_dsh.sh /setup_ssl_dsh.sh
+COPY --chown=${UID}:${GID} dsh/lib /home/${USER}/dsh/lib
 # install required packages
-COPY src/ /home/dsh/app/
-RUN chown -R $USERID.$USERID /home/dsh/
+COPY --chown=${UID}:${GID} src /app
 
-USER dsh
-WORKDIR /home/dsh/app
+USER ${USER}
+WORKDIR /app
 
 # entrypoint
-ENTRYPOINT ["/home/dsh/dsh/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["python" ,"-u", "example_helloworld.py"]
