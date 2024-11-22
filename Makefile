@@ -20,10 +20,10 @@ login:
 fix: 
 	find . -type f -print0 | xargs -0 dos2unix
 build:
-	docker build -t $(tagname) -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
+	docker build -t $(tagname) --platform linux/amd64 -f Dockerfile --build-arg UID=$(tenantuserid) .
 	docker tag  $(tagname) $(image)
 rebuild:
-	docker build --no-cache -t $(tagname) -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
+	docker build --no-cache -t $(tagname) --platform linux/amd64 -f Dockerfile --build-arg tenantuserid=$(tenantuserid) .
 	docker tag  $(tagname) $(image)
 all:
 	make login
